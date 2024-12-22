@@ -1,0 +1,67 @@
+#include <LiquidCrystal.h>
+const int rs = 13, en = 12, d4 = 11, d5 = 10, d6 = 9, d7 = 8;
+LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
+int f=7;
+int b=6;
+int l=5;
+int r=4;
+int red=A0;
+int green=A1;
+int buzzer=A2;
+void setup() 
+{
+  pinMode(red,OUTPUT);pinMode(green,OUTPUT);pinMode(buzzer,OUTPUT);
+  digitalWrite(red,LOW);digitalWrite(green,LOW);digitalWrite(buzzer,HIGH);
+  pinMode(f,INPUT);pinMode(b,INPUT);pinMode(l,INPUT);pinMode(r,INPUT);
+  lcd.begin(16, 2);
+ lcd.clear(); lcd.print("Vehicle Proximity ");
+  lcd.setCursor(0,1);lcd.print("For Highways Safety ");
+  digitalWrite(red,LOW);digitalWrite(green,HIGH);
+}
+
+void loop()
+{
+  int fval=digitalRead(f);delay(2);
+  int bval=digitalRead(b);delay(2);
+  int lval=digitalRead(l);delay(2);
+  int rval=digitalRead(r);delay(2);
+  if(fval==LOW)
+  {
+  
+  if(fval==LOW)
+  {
+  lcd.clear();lcd.print("OBJECT AT FRONT ");
+  digitalWrite(red,HIGH);digitalWrite(green,LOW);  
+  }
+  
+  }
+  if(bval==LOW)
+  {
+  lcd.clear();lcd.print("OBJECT AT BACK "); 
+  digitalWrite(red,HIGH);digitalWrite(green,LOW); 
+  }
+  
+  if(lval==LOW)
+  {
+  lcd.clear();lcd.print("OBJECT AT LEFT "); 
+  digitalWrite(red,HIGH);digitalWrite(green,LOW); 
+  }
+
+  if(rval==LOW)
+  {
+  lcd.clear();lcd.print("OBJECT AT RIGHT ");
+  digitalWrite(red,HIGH);digitalWrite(green,LOW);  
+  }
+
+  if(fval==HIGH && bval==HIGH && lval==HIGH && rval==HIGH)
+  {
+  lcd.clear();lcd.print("NO PROBLEM");
+  digitalWrite(red,LOW);digitalWrite(green,HIGH);  
+  }
+  if(fval==LOW || bval==LOW || lval==LOW || rval==LOW)
+  {
+  lcd.setCursor(0,1);lcd.print("OBJECT ALERT");
+  digitalWrite(red,HIGH);digitalWrite(green,LOW);
+  digitalWrite(buzzer,LOW);delay(100);digitalWrite(buzzer,HIGH);delay(100);  
+  }
+}
